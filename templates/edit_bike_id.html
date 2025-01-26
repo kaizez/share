@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Edit Bike ID{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit Bike ID: {{ bike_id }}</h2>
+    
+    <form method="POST">
+        {{ form.csrf_token }}
+        <div class="mb-3">
+            {{ form.bike_name.label(class="form-label") }}
+            {{ form.bike_name(class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ form.stock_quantity.label(class="form-label") }}
+            {{ form.stock_quantity(class="form-control") }}
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+</div>
+{% endblock %}

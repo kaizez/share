@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Lock/Unlock Bike{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Lock/Unlock Bike</h1>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Bike Lock/Unlock
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.csrf_token }}
+                        <div class="mb-3">
+                            {{ form.bike_id.label(class="form-label") }}
+                            {{ form.bike_id(class="form-control", placeholder="Enter Bike ID") }}
+                            {% if form.bike_id.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.bike_id.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        {{ form.submit(class="btn btn-primary") }}
+                    </form>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <h3>Instructions</h3>
+                <p>
+                    - Enter your Bike ID to lock or unlock
+                    - You can only lock/unlock during an active rental period
+                    - The bike status will change between available and unlocked
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

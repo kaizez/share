@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Unlock Bike{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Unlock Bike</h1>
+    <form method="POST" class="form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.bike_id.label }}
+            {{ form.bike_id(class="form-control") }}
+            {% if form.bike_id.errors %}
+                {% for error in form.bike_id.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+</div>
+{% endblock %}

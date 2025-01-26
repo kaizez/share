@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .content {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .cancel-link {
+        color: #007bff;
+        text-decoration: none;
+        margin-left: 10px;
+    }
+
+    .flash-message {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        border: 1px solid #f5c6cb;
+        border-radius: 4px;
+        margin-bottom: 15px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1>Edit Order #{{ order.order_id }}</h1>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash-message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <div class="form-group">
+            <label class="form-label">Customer Name</label>
+            <p>{{ order.customer_info.get('full_name', 'Unknown Customer') }}</p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Order Date</label>
+            <p>{{ order.order_date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+        </div>
+
+        <div class="form-group">
+            <label for="start_date" class="form-label">Start Date</label>
+            <input type="date" id="start_date" name="start_date" 
+                   value="{{ order.rental_dates.get('start_date') }}"
+                   class="form-control"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="end_date" class="form-label">End Date</label>
+            <input type="date" id="end_date" name="end_date" 
+                   value="{{ order.rental_dates.get('end_date') }}"
+                   class="form-control"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <h3>Order Items:</h3>
+            {% for item in order.items.values() %}
+                <div class="form-group">
+                    {% if item.get('product') %}
+                        {# New Product Class #}
+                        <p>{{ item['product'].get_name() }}</p>
+                        <p>${{ item['product'].get_price() }} per day</p>
+                    {% elif item.get('bike') %}
+                        {# Old Dictionary-based Bike #}
+                        <p>{{ item['bike'].get('bike_name', 'Unknown Bike') }}</p>
+                        <p>${{ item['bike'].get('price', 0) }} per day</p>
+                    {% else %}
+                        <p>Unidentified Item</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn-primary">
+                Update Order
+            </button>
+            <a href="{{ url_for('view_orders') }}" class="cancel-link">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

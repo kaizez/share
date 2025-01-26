@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}EcoBike - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Admin Dashboard</h1>
+        <hr>
+    </div>
+
+    <!-- Upload GPX File Section -->
+    <div class="mb-4">
+        <h3>Upload GPX File</h3>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="gpx_file">Select GPX File:</label>
+                <input type="file" class="form-control-file" id="gpx_file" name="gpx_file" accept=".gpx">
+            </div>
+            <button type="submit" class="btn btn-success mt-4">Upload and Process</button>
+        </form>
+    </div>
+
+    <!-- Dashboard Summary -->
+    <div class="mt-5">
+        <h3>Dashboard Summary</h3>
+        <ul>
+            <li><strong>Total Distance:</strong> {{ gpx_details.total_distance | round(2) }} km</li>
+            <li><strong>Average Speed:</strong> {{ gpx_details.avg_speed | round(2) }} km/h</li>
+            <li><strong>Total Carbon Emissions:</strong> {{ gpx_details.carbon_emissions | round(2) }} kg CO2</li>
+            <li><strong>Total Duration:</strong> {{ gpx_details.duration | round(2) }} hours</li>
+            <li><strong>Bike Count:</strong> {{ bike_count }}</li>
+        </ul>
+    </div>
+
+    <!-- Reset Dashboard Button -->
+    <div class="mt-5">
+        <h3>Actions</h3>
+        <form method="POST" action="/resetDashboard">
+            <button type="submit" class="btn btn-danger">Reset Dashboard</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

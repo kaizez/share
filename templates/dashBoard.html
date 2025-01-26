@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}EcoBike - Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Dashboard Title -->
+    <div class="dashboard-header">
+        <h1>Dashboard</h1>
+        <hr>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="dashboard-content">
+        <!-- Weekly Leaderboard -->
+        <div class="leaderboard">
+            <h3>Weekly Leaderboard</h3>
+            <ul>
+                {% for user in leaderboard %}
+                <li>
+                    <div class="user-info">
+                        <span class="avatar" style="background-color: {{ user.color }};">{{ user.avatar }}</span>
+                        <span>{{ user.name }}</span>
+                    </div>
+                    <span class="change {{ user.change }}">{{ '▲' if user.change == 'up' else '▼' }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            <a href="#" class="more-link">More</a>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats">
+            <div class="stat-card">
+                <h4>Total Emissions</h4>
+                <p>{{ total_emissions | round(2) }} kg CO2</p>
+            </div>
+            <div class="stat-card">
+                <h4>Bike Count</h4>
+                <p>{{ bike_count }}</p>
+            </div>
+            <div class="stat-card">
+                <h4>Total Miles</h4>
+                <p>{{ total_miles | round(2) }} km</p>
+            </div>
+            <div class="stat-card">
+                <h4>Total Duration</h4>
+                <p>{{ duration | round(2) }} hours</p>
+            </div>
+            <div class="stat-card">
+                <h4>Avg Speed</h4>
+                <p>{{ avg_speed | round(2) }} km/h</p>
+            </div>
+        </div>
+
+        <!-- Latest Track Section -->
+        <div class="latest-track">
+            <div class="track-container">
+                <!-- Route Visualization -->
+                <div class="route-visual">
+                    {% if svg_points %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="300" height="150">
+                        <polyline points="{{ svg_points }}" fill="none" stroke="black" stroke-width="4" />
+                    </svg>
+                    {% else %}
+                    <p>No GPX track uploaded yet.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Track Details -->
+                <div class="track-details">
+                    <h4>Latest Tracklist</h4>
+                    {% if total_miles > 0 %}
+                    <p><strong>Points earned:</strong> 470</p>
+                    <p><strong>Total Distance:</strong> {{ total_miles | round(2) }} km</p>
+                    <p><strong>Carbon Saved:</strong> {{ total_emissions | round(2) }} CO2</p>
+                    {% else %}
+                    <p>No GPX track data available. Please upload a file in the Admin Dashboard.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
